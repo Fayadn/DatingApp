@@ -20,6 +20,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using API.Extensions;
+using Microsoft.AspNetCore.Authentication.Certificate;
 
 namespace API
 {
@@ -41,13 +42,17 @@ namespace API
             services.AddCors();
             services.AddIdentityServices(_config);
 
+            services.AddAuthentication(
+    CertificateAuthenticationDefaults.AuthenticationScheme)
+    .AddCertificate();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
         }
 
-        
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
